@@ -28,35 +28,35 @@ export default {
     getFilterOptions() {
       const request = new Request();
 
-      request.getSearchFormItem('http://127.0.0.1:8000/api/v1/specialities_by_list/')
+      request.getSearchFormItem('http://127.0.0.1:8000/api/v1/speciality/')
       .then((data) => {
         const specialities = data;
         const render = new Render();
         render.renderSearchFormItem(specialities, '#speciality');
       });
 
-      request.getSearchFormItem('http://127.0.0.1:8000/api/v1/languages_by_list/')
+      request.getSearchFormItem('http://127.0.0.1:8000/api/v1/language/')
       .then((data) => {
         const languages = data;
         const render = new Render();
         render.renderSearchFormItem(languages, '#language');
       });
 
-      request.getSearchFormItem('http://127.0.0.1:8000/api/v1/grades_by_list/')
+      request.getSearchFormItem('http://127.0.0.1:8000/api/v1/grade/')
       .then((data) => {
         const languages = data;
         const render = new Render();
         render.renderSearchFormItem(languages, '#grade');
       });
 
-      request.getSearchFormItem('http://127.0.0.1:8000/api/v1/experiences_by_list/')
+      request.getSearchFormItem('http://127.0.0.1:8000/api/v1/experience/')
       .then((data) => {
         const languages = data;
         const render = new Render();
         render.renderSearchFormItem(languages, '#experience');
       });
 
-      request.getSearchFormItem('http://127.0.0.1:8000/api/v1/cities_by_list/')
+      request.getSearchFormItem('http://127.0.0.1:8000/api/v1/city/')
       .then((data) => {
         const languages = data;
         const render = new Render();

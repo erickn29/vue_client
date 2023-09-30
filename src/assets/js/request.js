@@ -1,7 +1,7 @@
 export default class Request {
     urls = {
-        'getVacanciesURL': 'http://127.0.0.1:8000/api/v1/vacancies/',
-        'getSpecialityURL': 'http://127.0.0.1:8000/api/v1/specialities_by_list/',
+        'getVacanciesURL': 'http://127.0.0.1:8000/api/v1/vacancy/',
+        'getSpecialityURL': 'http://127.0.0.1:8000/api/v1/speciality/',
     }
     getVacanciesData(url, params) {
         let rUrl = ''
@@ -39,7 +39,7 @@ export default class Request {
                     data: {},
 
                     success: function (data) {
-                        resolve(data.result)
+                        resolve(data.results)
                     },
                     error: function (error) {
                         reject(error)

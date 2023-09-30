@@ -10,11 +10,12 @@ export default {
   data() {
     return {
       count: 0,
+      loading: false
     };
   },
   computed: {
     computedCount() {
-      console.log('Computed')
+      console.log("Computed");
       return this.count;
     },
   },
@@ -23,24 +24,39 @@ export default {
       let requestUrl = $(id).attr("value");
       const request = new Request();
       const render = new Render();
-      const params = {
-        speciality: $("#speciality").val(),
-        language: $("#language").val(),
-        grade: $("#grade").val(),
-        experience: $("#experience").val(),
-        location: $("#location").val(),
-        salary_from: $("#id_salary_from").val(),
-        is_remote: $("#id_is_remote").prop("checked"),
-      };
+      let params = {};
+      if (!id) {
+        params = {
+          speciality: $("#speciality").val(),
+          language: $("#language").val(),
+          grade: $("#grade").val(),
+          experience: $("#experience").val(),
+          location: $("#location").val(),
+          salary_from: $("#id_salary_from").val(),
+          is_remote: $("#id_is_remote").prop("checked"),
+        };
+      }
+
       request
         .getVacanciesData(requestUrl, params)
         .then((data) => {
-          this.count = data.count
+          this.count = data.count;
           let vacanciesList = render.renderVacanciesList(data);
           $(".vacancies-list").html(vacanciesList);
-          $("#prev").attr("value", data.previous);
-          $("#next").attr("value", data.next);
-          $('.vacancy-count').html(`Найдено вакансий: ${this.count}`)
+          if (data.previous) {
+            $("#prev").css('display', 'block')
+            $("#prev").attr("value", data.previous)
+          } else {
+            $("#prev").css('display', 'none')
+          }
+          if (data.next) {
+            $("#next").css('display', 'block')
+            $("#next").attr("value", data.next)
+          } else {
+            $("#next").css('display', 'none')
+          }
+          $(".vacancy-count").html(`Найдено вакансий: ${this.count}`);
+          this.loading = true
         })
         .catch((error) => {
           console.error(error);
@@ -56,6 +72,7 @@ export default {
   mounted() {
     this.getVacanciesData();
     this.toTop();
+    
   },
 };
 </script>
@@ -64,8 +81,10 @@ export default {
   <div class="container main-container">
     <div class="row">
       <div class="col-md-3 left-side">
-        <Filter />
-        <div class="vacancy-count">Найдено вакансий: {{count}}</div>
+        <div class="left-side-wrapper">
+          <Filter />
+          <div class="vacancy-count">Найдено вакансий: {{ count }}</div>
+          </div>
       </div>
       <div class="col-md-9">
         <div class="vacancies-list"></div>
@@ -73,7 +92,7 @@ export default {
           <button
             id="prev"
             @click="
-              getVacanciesData('#prev');
+              getVacanciesData('#prev', {});
               toTop();
             "
             class="btn submit-button mx-1"
@@ -83,7 +102,7 @@ export default {
           <button
             id="next"
             @click="
-              getVacanciesData('#next');
+              getVacanciesData('#next', {});
               toTop();
             "
             class="btn submit-button mx-1"
@@ -94,9 +113,21 @@ export default {
       </div>
     </div>
   </div>
+  <div v-if="!loading" class="loader"></div>
 </template>
 
 <style>
+
+.loader {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  z-index: 999;
+}
+
 .main-container {
   padding-top: 57px;
 }
@@ -105,6 +136,11 @@ export default {
   padding: 30px 10px 10px 10px;
   /* position: sticky; */
   top: 57px;
+}
+
+.left-side-wrapper{
+  position: sticky;
+  top: 80px;
 }
 
 .vacancies-list {
@@ -138,7 +174,7 @@ export default {
 
 .vacancy-title a:hover {
   text-decoration: none !important;
-  color: #fa9e70;
+  color: rgb(88 92 249);
   transition: 0.2s;
 }
 

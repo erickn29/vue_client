@@ -2,7 +2,6 @@ export default class Render {
     renderVacanciesList = function (data) {
         let vacancyItems = []
         for (let i = 0; i < data.results.length; i++) {
-    
             let title = `
             <div class="vacancy-title">
                 <a href="${data.results[i].link}" target="_blank">
@@ -21,21 +20,21 @@ export default class Render {
                 if (data.results[i].salary_to) {
                     salary = `
                     <div class="vacancy-salary">
-                        <h3>от ${ data.results[i].salary_from} руб.
-                        до ${ data.results[i].salary_to} руб.</h3>
+                        <h3>от ${ data.results[i].salary_from.toLocaleString()} руб.
+                        до ${ data.results[i].salary_to.toLocaleString()} руб.</h3>
                     </div>
                     `
                 }else{
                     salary = `
                     <div class="vacancy-salary">
-                        <h3>от ${ data.results[i].salary_from} руб.</h3>
+                        <h3>от ${ data.results[i].salary_from.toLocaleString()} руб.</h3>
                     </div>
                     `
                 }
             }else{
                 salary = `
                 <div class="vacancy-salary">
-                    <h3>до ${data.results[i].salary_to} руб.</h3>
+                    <h3>до ${data.results[i].salary_to.toLocaleString()} руб.</h3>
                 </div>
                 `
             }
@@ -74,7 +73,7 @@ export default class Render {
                     <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
                     <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
                     </svg>
-                    ${data.results[i].company.city}
+                    ${data.results[i].company.city.name}
                 </div>
                 `
             }
@@ -107,7 +106,7 @@ export default class Render {
                 title + 
                 salary + 
                 experience +
-                stack + '</div>' +
+                stack +
                 company +
                 city +
                 remote +
@@ -122,8 +121,8 @@ export default class Render {
     renderSearchFormItem(data, id){
         for(let i=0; i < data.length; i++){
             $(id).append($('<option>', {
-                value: data[i],
-                text: data[i]
+                value: data[i].name,
+                text: data[i].name
             }));
         }
     }
